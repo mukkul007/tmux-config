@@ -1,13 +1,17 @@
 #save the file as ~/.tmux.conf to work
 
+#terminal override
+set -g default-terminal "screen-256color"
+#set -g default-terminal "xterm-256color"
+
 # remap prefix from 'C-b' to 'C-a'
 unbind C-b
 set-option -g prefix C-a
 bind-key C-a send-prefix
 
 # split panes using | and -
-bind \ split-window -h
-bind - split-window -v
+bind '\' split-window -h
+bind '-' split-window -v
 unbind '"'
 unbind %
 
@@ -33,7 +37,28 @@ bind-key s command-prompt -p "send pane to:" "join-pane -t '%%'"
 # Search Mode VI (default is emac)
 set-window-option -g mode-keys vi
 
+# Copy using VI
+bind P paste-buffer
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-selection
+bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
+
+#bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -i -selection clipboard'
+
+#Copy tmux paste buffer to CLIPBOARD
+# bind C-c run "tmux show-buffer | xclip -i -selection clipboard"
+# bind -t vi-copy y copy-pipe "xclip -sel clip -i"
+
 #enable logging of tmux data
-run-shell /home/tmux-logging/logging.tmux
+#run-shell /home/tmux-logging/logging.tmux
+
+# Highlight active window
+#set-window-option -g window-status-current-bg red (old config)
+set-window-option -g window-status-current-style fg=green,bg=red
 
 
+#set clipboard size
+set -g set-clipboard off
+
+# Start numbering at 1
+set -g base-index 1
